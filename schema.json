@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FactsheetJSON",
+  "type": "object",
+  "properties": {
+    "file_name": { "type": "string" },
+    "doc_date": { "type": ["string", "null"] },
+    "fund": {
+      "type": "object",
+      "properties": {
+        "name": { "type": ["string", "null"] },
+        "category": { "type": ["string", "null"] },
+        "aum_crore": { "type": ["number", "null"] },
+        "monthly_avg_aum": { "type": ["number", "null"] },
+        "expense_ratio_regular": { "type": ["number", "null"] },
+        "expense_ratio_direct": { "type": ["number", "null"] },
+        "benchmark": { "type": ["string", "null"] },
+        "additional_benchmark": { "type": ["string", "null"] },
+        "date_of_allotment": { "type": ["string", "null"] },
+        "managers": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 0
+        }
+      },
+      "required": ["name", "category", "aum_crore", "monthly_avg_aum",
+                   "expense_ratio_regular", "expense_ratio_direct",
+                   "benchmark", "additional_benchmark",
+                   "date_of_allotment", "managers"]
+    },
+    "pages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "page_number": { "type": "integer" },
+          "content": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": { "enum": ["heading", "paragraph", "table", "chart", "meta"] },
+                "section": { "type": ["string", "null"] },
+                "sub_section": { "type": ["string", "null"] },
+                "text": { "type": ["string", "null"] },
+                "table": {
+                  "type": ["object", "null"],
+                  "properties": {
+                    "headers": {
+                      "type": "array",
+                      "items": { "type": "string" }
+                    },
+                    "rows": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": { "type": "string" }
+                      }
+                    }
+                  },
+                  "required": ["headers", "rows"]
+                },
+                "bbox": { "type": ["array", "null"], "items": { "type": "number" } },
+                "meta": { "type": ["object", "null"] }
+              },
+              "required": ["type"]
+            }
+          }
+        },
+        "required": ["page_number", "content"]
+      }
+    }
+  },
+  "required": ["file_name", "doc_date", "fund", "pages"]
+}
