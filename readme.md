@@ -1,39 +1,89 @@
-360ONE Factsheet Parser
------------------------
+# Mutual Fund Parser
 
-This project contains a Python script to extract structured JSON data from 360ONE
-mutual fund factsheet PDF files.
+A Python tool to extract structured JSON data (text, tables, charts, and fund metadata) from mutual fund factsheet PDFs.
+Built using PyMuPDF, pdfplumber, pandas, and regex, this parser converts unstructured PDFs into machine-readable JSON for further analysis or integration.
 
-Requirements
-------------
-- Python 3.8 or higher
-- Install dependencies by running:
+## Features
 
-    pip install PyMuPDF pdfplumber pandas
+- Extracts fund metadata (name, category, benchmarks, expense ratios, managers, etc.)
 
-How to Run
-----------
-1. Place the PDF factsheet in the same folder as the script (or note its path).
-2. Run the script from the command line:
+- Captures headings, sub-sections, and paragraphs
 
+- Splits long paragraphs into clean sentences
+
+- Normalizes tables (removes empty trailing cells, fixes broken words)
+
+- Adds chart placeholders for easy downstream processing
+
+- Cleans glued words like endedequity → ended equity
+
+## Requirements
+
+- Python 3.8+
+
+Dependencies:
+```bash
+    pip install -r requirements.txt
+```
+
+
+requirements.txt contains:
+
+- PyMuPDF
+- pdfplumber
+- pandas
+
+## Usage
+
+Run the parser on any factsheet PDF:
+```bash
     python parse_factsheet.py --pdf input.pdf --out output.json
+```
 
-   where:
-   - input.pdf  = path to the PDF factsheet file
-   - output.json = path where the JSON output will be saved
+--pdf → Path to the input PDF file
 
-Output
-------
-The script produces a JSON file with:
-- Fund metadata (name, category, AUM, expense ratios, benchmarks, managers, etc.)
-- Page-level structured content:
-  * Headings
-  * Paragraphs (long text is split into sentences)
-  * Tables (rows and columns normalized, extra empty cells removed)
-  * Chart placeholders (detected but not extracted)
+--out → Path to save the extracted JSON
 
-Example
--------
-    python parse_factsheet.py --pdf "[Fund Factsheet - May]360ONE-MF-May 2025.pdf.pdf" --out out.json
+## Example
+```bash
+    python parse_factsheet.py --pdf sample.pdf --out sample_output.json
+```
 
-This will create "out.json" containing the structured representation of the PDF.
+Produces sample_output.json:
+```bash
+    {
+    "file_name": "sample.pdf",
+    "doc_date": "May 2025",
+    "fund": {
+        "name": "360 ONE FOCUSED EQUITY FUND",
+        "category": "An open ended equity scheme investing in maximum 30 multicap stocks",
+        "benchmark": "Nifty 500 TRI",
+        "managers": ["Mayur Patel", "Ashish Ongari"]
+    },
+    "pages": [
+        {
+        "page_number": 1,
+        "content": [
+            {"type": "heading", "text": "Equity Market Update"},
+            {"type": "paragraph", "text": "Markets continued to remain volatile during May 2025..."}
+        ]
+        }
+    ]
+    }
+```
+
+## Use Cases
+
+- Automating financial factsheet parsing
+
+- Building data pipelines for fund analysis
+
+- Preprocessing PDFs for ML/NLP models
+
+## Roadmap (Future Enhancements)
+
+- OCR support for scanned PDFs
+
+- Improved table merging across multi-line headers
+
+- Export to CSV/SQL for analytics platforms
