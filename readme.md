@@ -5,17 +5,17 @@ Built using PyMuPDF, pdfplumber, pandas, and regex, this parser converts unstruc
 
 ## Features
 
-- Extracts fund metadata (name, category, benchmarks, expense ratios, managers, etc.)
+⮕ Extracts fund metadata (name, category, benchmarks, expense ratios, managers, etc.)
 
-- Captures headings, sub-sections, and paragraphs
+⮕ Captures headings, sub-sections, and paragraphs
 
-- Splits long paragraphs into clean sentences
+⮕ Splits long paragraphs into clean sentences
 
-- Normalizes tables (removes empty trailing cells, fixes broken words)
+⮕ Normalizes tables (removes empty trailing cells, fixes broken words)
 
-- Adds chart placeholders for easy downstream processing
+⮕ Adds chart placeholders for easy downstream processing
 
-- Cleans glued words like endedequity → ended equity
+⮕ Cleans glued words like endedequity → ended equity
 
 ## Requirements
 
